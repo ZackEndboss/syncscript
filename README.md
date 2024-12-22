@@ -23,8 +23,8 @@ Teste das Skript, indem du in das Verzeichnis des Skripts wechselst und die folg
 
 ```
 cd path/to/script
-./sync-directories.sh "/mnt/user/source_path/Filme" "user@host:/home/user/dest_path/Filme" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
-./sync-directories.sh "user@host:/path/to/source" "/path/to/destination" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
+./sync-directory.sh "/mnt/user/source_path/Filme" "user@host:/home/user/dest_path/Filme" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
+./sync-directory.sh "user@host:/path/to/source" "/path/to/destination" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
 ```
 
 ### Finale Einrichtung

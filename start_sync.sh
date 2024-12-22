@@ -8,7 +8,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Make scripts executable if they aren't already
-chmod +x "$SCRIPT_DIR/sync-directories.sh"
+chmod +x "$SCRIPT_DIR/sync-directory.sh"
 
 # Loading config
 source config.sh
@@ -33,7 +33,7 @@ for entry in "${SYNC_ENTRIES[@]}"; do
 
     echo "Syncing $UNIQUE_NAME..."
     # Execute the sync script with configured parameters
-    if "$SCRIPT_DIR/sync-directories.sh" "$SRC_PATH" "$DEST_PATH" "$REMOTE_PORT" "$EXCLUDE_FILE"; then
+    if "$SCRIPT_DIR/sync-directory.sh" "$SRC_PATH" "$DEST_PATH" "$REMOTE_PORT" "$EXCLUDE_FILE"; then
         echo "Sync completed for $UNIQUE_NAME."
     else
         echo "Sync failed for $UNIQUE_NAME. See logs for details."
