@@ -6,8 +6,8 @@ Bevor du das Skript ausführst, stelle sicher, dass du folgende Schritte durchge
 ### 1. SSH-Key Setup
 - Stelle sicher, dass dein lokaler öffentlicher SSH-Schlüssel im `$HOME/.ssh/authorized_keys` auf dem Remote-Host hinterlegt ist:
   ```
-  cat ~/.ssh/*.pub # Füge diesen Schlüssel in die remote $HOME/.ssh/authorized_keys ein
-
+  cat ~/.ssh/*.pub | ssh user@remote_host -p 22 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+  ```
 
 ### 2. Bekannte Hosts hinzufügen
 - Füge den Remote-Host zu deinen bekannten Hosts hinzu, um Verbindungsprobleme zu vermeiden:
@@ -17,6 +17,10 @@ Bevor du das Skript ausführst, stelle sicher, dass du folgende Schritte durchge
 
 ### 3. Vorbereitung für Unraid: UserScripts
 - Wenn du Unraid verwendest, richte die erforderlichen UserScripts ein.
+  ```
+  cd PATH/TO/SCRIPTS
+  ./start_sync.sh
+  ```
 
 ## Test
 Teste das Skript, indem du in das Verzeichnis des Skripts wechselst und die folgenden Befehle ausführst:
