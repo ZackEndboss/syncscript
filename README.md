@@ -1,33 +1,58 @@
-# syncscript
+# Syncscript
 
-# BEFORE RUNNING:
- - be sure, your local public ssh key is in the $HOME/.ssh/authorized_keys on the remote-host
-   cat ~/.ssh/*.pub # put this key into the remote $HOME/.ssh/authorized_keys
+## Before Running
+Bevor du das Skript ausführst, stelle sicher, dass du folgende Schritte durchgeführt hast:
 
- - add known_hosts
-   ssh-keyscan -H "remote_host" >> ~/.ssh/known_hosts
+### 1. SSH-Key Setup
+- Stelle sicher, dass dein lokaler öffentlicher SSH-Schlüssel im `$HOME/.ssh/authorized_keys` auf dem Remote-Host hinterlegt ist:
+  ```bash
+  cat ~/.ssh/*.pub # Füge diesen Schlüssel in die remote $HOME/.ssh/authorized_keys ein
 
- - Unraid: UserScripts
 
-# TEST:
- cd path/to/script
- ./sync-directories.sh "/mnt/user/source_path/Filme" "user@host:/home/user/dest_path/Filme" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
- ./sync-directories.sh "user@host:/path/to/source" "/path/to/destination" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
+### 2. Bekannte Hosts hinzufügen
+```markdown
+### 2. Bekannte Hosts hinzufügen
+- Füge den Remote-Host zu deinen bekannten Hosts hinzu, um Verbindungsprobleme zu vermeiden:
+  ```bash
+  ssh-keyscan -H "remote_host" >> ~/.ssh/known_hosts
 
-# Final:
- Edit your config.sh
 
- # Remote-Host (can be source or destination)
- REMOTE_HOST=example.com
+### 3. Vorbereitung für Unraid: UserScripts
+```markdown
+### 3. Vorbereitung für Unraid: UserScripts
+- Wenn du Unraid verwendest, richte die erforderlichen UserScripts ein.
 
- # SSH-Port
- REMOTE_PORT=22
- 
- # Folder to Sync
- # Syntax: "title;source;destination"
- SYNC_ENTRIES=(
-     "ebooks;/local/source/path/to/ebooks;$REMOTE_HOST:/remote/destination/path/to/ebooks"
-     "filme;$REMOTE_HOST:/remote/source/to/filme;/local/destination/to/filme"
- )
- 
- 
+## Test
+Teste das Skript, indem du in das Verzeichnis des Skripts wechselst und die folgenden Befehle ausführst:
+
+```bash
+cd path/to/script
+./sync-directories.sh "/mnt/user/source_path/Filme" "user@host:/home/user/dest_path/Filme" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
+./sync-directories.sh "user@host:/path/to/source" "/path/to/destination" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
+
+
+### Finale Einrichtung
+```markdown
+## Final Setup
+Bearbeite `config.sh` gemäß deinen spezifischen Anforderungen:
+
+```bash
+# Remote-Host (kann Quelle oder Ziel sein)
+REMOTE_HOST=example.com
+
+# SSH-Port
+REMOTE_PORT=22
+
+# Ordner synchronisieren
+# Syntax: "Titel;Quelle;Ziel"
+SYNC_ENTRIES=(
+    "ebooks;/local/source/path/to/ebooks;$REMOTE_HOST:/remote/destination/path/to/ebooks"
+    "filme;$REMOTE_HOST:/remote/source/to/filme;/local/destination/to/filme"
+)
+
+
+### Hinweise
+```markdown
+### Hinweise
+- Ersetze `"remote_host"` und andere Platzhalter mit den tatsächlichen Werten, die für deine Konfiguration spezifisch sind.
+- Stelle sicher, dass du den korrekten SSH-Port angibst, falls du einen anderen als den Standardport (22) verwendest.
