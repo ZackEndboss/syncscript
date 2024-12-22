@@ -1,0 +1,6 @@
+# Ignoriere spezifische Config
+config.sh
+
+# Ignoriere user specific exclude files and lock files
+.exclude_*
+.*.lock
