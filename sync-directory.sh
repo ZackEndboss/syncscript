@@ -27,7 +27,7 @@ SRC_PATH="$1"
 DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
-RSYNC_OPTS="-av --partial-dir=.rsync-partials --info=progress2" # -av --partial
+RSYNC_OPTS="-av --partial-dir=.rsync-partials --info=progress2 --prune-empty-dirs" # -av --partial
 
 echo
 echo "source:      $SRC_PATH"
