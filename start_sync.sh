@@ -13,6 +13,7 @@ chmod +x "$SCRIPT_DIR/sync-directory.sh"
 # Loading config
 source config.sh
 
+logger "Sync-Skript started: $(basename "$0")"
 
 # Function to check if a process is running
 is_process_running() {
