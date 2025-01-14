@@ -13,6 +13,13 @@ chmod +x "$SCRIPT_DIR/sync-directory.sh"
 # Loading config
 source config.sh
 
+
+# Function to check if a process is running
+is_process_running() {
+    local pid=$1
+    ps -p "$pid" > /dev/null 2>&1
+}
+
 # Loop through each configuration entry
 for entry in "${SYNC_ENTRIES[@]}"; do
     IFS=';' read -ra ADDR <<< "$entry"  # split entry into an array using semicolon
@@ -22,23 +29,35 @@ for entry in "${SYNC_ENTRIES[@]}"; do
     EXCLUDE_FILE="$SCRIPT_DIR/.exclude_${UNIQUE_NAME}.txt"  # specific exclude file for each entry
     LOCK_FILE="$SCRIPT_DIR/.${UNIQUE_NAME}.lock"  # Lock file for each unique name
 
+
     # Check if lock file exists
     if [ -f "$LOCK_FILE" ]; then
-        echo "Sync process is already running for $UNIQUE_NAME. Skipping..."
-        continue
+        LOCK_PID=$(cat "$LOCK_FILE")
+        if is_process_running "$LOCK_PID"; then
+            echo "Sync process is already running for $UNIQUE_NAME (PID $LOCK_PID). Skipping..."
+            continue
+        else
+            echo "Stale lock file detected for $UNIQUE_NAME. Removing stale lock file..."
+            rm -f "$LOCK_FILE"
+        fi
     fi
 
-    # Create lock file
-    touch "$LOCK_FILE"
 
+    # Start sync and capture the PID
     echo "Syncing $UNIQUE_NAME..."
-    # Execute the sync script with configured parameters
-    if "$SCRIPT_DIR/sync-directory.sh" "$SRC_PATH" "$DEST_PATH" "$REMOTE_PORT" "$EXCLUDE_FILE"; then
+    "$SCRIPT_DIR/sync-directory.sh" "$SRC_PATH" "$DEST_PATH" "$REMOTE_PORT" "$EXCLUDE_FILE" &
+    SYNC_PID=$!
+    echo "$SYNC_PID" > "$LOCK_FILE"
+
+    # Wait for sync process to complete
+    wait "$SYNC_PID"
+    if [ $? -eq 0 ]; then
         echo "Sync completed for $UNIQUE_NAME."
     else
         echo "Sync failed for $UNIQUE_NAME. See logs for details."
     fi
-    rm "$LOCK_FILE"
+    rm -f "$LOCK_FILE"
+
 done
 
 echo "All syncs completed successfully."
