@@ -36,6 +36,7 @@ for entry in "${SYNC_ENTRIES[@]}"; do
         LOCK_PID=$(cat "$LOCK_FILE")
         if is_process_running "$LOCK_PID"; then
             echo "Sync process is already running for $UNIQUE_NAME (PID $LOCK_PID). Skipping..."
+            logger "Sync-Skript ${UNIQUE_NAME}-sync already running: ${UNIQUE_NAME}[$LOCK_PID]"
             continue
         else
             echo "Stale lock file detected for $UNIQUE_NAME. Removing stale lock file..."
@@ -56,9 +57,11 @@ for entry in "${SYNC_ENTRIES[@]}"; do
         echo "Sync completed for $UNIQUE_NAME."
     else
         echo "Sync failed for $UNIQUE_NAME. See logs for details."
+        logger "Sync-Skript ${UNIQUE_NAME}-sync failed: {UNIQUE_NAME}[$SYNC_PID]"
     fi
     rm -f "$LOCK_FILE"
 
 done
 
 echo "All syncs completed successfully."
+logger "Sync-Script done."
