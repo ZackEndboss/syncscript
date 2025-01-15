@@ -30,7 +30,8 @@ for entry in "${SYNC_ENTRIES[@]}"; do
     EXCLUDE_FILE="$SCRIPT_DIR/.exclude_${UNIQUE_NAME}.txt"  # specific exclude file for each entry
     LOCK_FILE="$SCRIPT_DIR/.${UNIQUE_NAME}.lock"  # Lock file for each unique name
 
-
+    echo
+    echo "Syncing $UNIQUE_NAME..."
     # Check if lock file exists
     if [ -f "$LOCK_FILE" ]; then
         LOCK_PID=$(cat "$LOCK_FILE")
@@ -46,7 +47,6 @@ for entry in "${SYNC_ENTRIES[@]}"; do
 
 
     # Start sync and capture the PID
-    echo "Syncing $UNIQUE_NAME..."
     "$SCRIPT_DIR/sync-directory.sh" "$SRC_PATH" "$DEST_PATH" "$REMOTE_PORT" "$EXCLUDE_FILE" &
     SYNC_PID=$!
     echo "$SYNC_PID" > "$LOCK_FILE"
@@ -63,5 +63,6 @@ for entry in "${SYNC_ENTRIES[@]}"; do
 
 done
 
-echo "All syncs completed successfully."
+echo
+echo "All syncs completed."
 logger "Sync-Script done."

@@ -29,7 +29,6 @@ SSH_PORT="$3"
 EXCLUDE_FILE="$4"
 RSYNC_OPTS="-av -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av --partial --info=progress2
 
-echo
 echo "source:      $SRC_PATH"
 echo "destination: $DEST_PATH"
 echo "ssh-port:    $SSH_PORT"
