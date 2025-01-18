@@ -29,11 +29,11 @@ SSH_PORT="$3"
 EXCLUDE_FILE="$4"
 RSYNC_OPTS="-av -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av --partial --info=progress2
 
-echo "source:      $SRC_PATH"
-echo "destination: $DEST_PATH"
-echo "ssh-port:    $SSH_PORT"
-echo "exclude-file: $EXCLUDE_FILE"
-
+#echo "source:      $SRC_PATH"
+#echo "destination: $DEST_PATH"
+#echo "ssh-port:    $SSH_PORT"
+#echo "exclude-file: $EXCLUDE_FILE"
+echo "$SRC_PATH -> $DEST_PATH"
 
 # Verify local path exists and is writable
 if ! is_remote_path "$SRC_PATH"; then
@@ -61,18 +61,13 @@ if is_remote_path "$SRC_PATH"; then
     # Remote-Pfad
     user_host="${SRC_PATH%%:*}"  # Extrahiere "user@host"
     remote_path="${SRC_PATH#*:}" # Extrahiere den eigentlichen Pfad
-    echo "user_host: $user_host - remote_path: $remote_path"
-    #ITEMS=$(ssh -p "$SSH_PORT" "$user_host" "ls -A \"$remote_path\"") || error_exit "Failed to get remote directory listing for $path"
+    #echo "user_host: $user_host - remote_path: $remote_path"
     ITEMS=$(ssh -p "$SSH_PORT" "$user_host" "find \"$remote_path\" -type f") || error_exit "Failed to get remote directory listing for $path"
 
 else
     # Lokaler Pfad
-    #ITEMS=$(ls -A "$SRC_PATH") || error_exit "Failed to get local directory listing"
     ITEMS=$(find "$SRC_PATH" -type f) || error_exit "Failed to get local directory listing"
 fi
-
-#echo "items:"
-#echo "$ITEMS"
 
 # Retry loop for rsync
 SUCCESS=0
@@ -82,7 +77,9 @@ MAX_ATTEMPTS=10
 
 for (( ATTEMPT=1; ATTEMPT<=MAX_ATTEMPTS; ATTEMPT++ ))
 do
-    echo "Attempt $ATTEMPT of $MAX_ATTEMPTS..."
+    if [ "$ATTEMPT" -gt 1 ]; then
+      echo "Attempt $ATTEMPT of $MAX_ATTEMPTS..."
+    fi
     rsync $RSYNC_OPTS \
         --rsh="ssh -p $SSH_PORT" \
         --exclude-from="$EXCLUDE_FILE" \
@@ -101,7 +98,7 @@ done
 # Check if rsync was successful for the final actions
 if [ $SUCCESS -eq 1 ]; then
     echo "$ITEMS" > "$EXCLUDE_FILE" || error_exit "Failed to update Exclude_File"
-    echo "Sync completed. Updated directory listing saved to $EXCLUDE_FILE"
+    echo "Success. Updated directory listing saved to $EXCLUDE_FILE"
 else
     error_exit "Rsync failed after $MAX_ATTEMPTS attempts."
 fi
