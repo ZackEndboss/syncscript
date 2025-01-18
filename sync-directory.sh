@@ -99,11 +99,14 @@ done
 if [ $SUCCESS -eq 1 ]; then
     # Vergleiche die Variable mit der Datei und finde neue Dateien
     diff_files=$(diff --new-line-format='%L' --unchanged-line-format='' <(echo "$ITEMS") "$EXCLUDE_FILE")
-
+    echo "$diff_files"
     # Zähle die neuen Dateien
-    diff_count=$(echo "$diff_files" | wc -l)
+    diff_count=$(echo "$diff_files" | grep -v '^$' | wc -l)
 
-    echo "Success: $diff_count files. Update $EXCLUDE_FILE"
+    if [ "$diff_count" -gt 0 ]; then
+      echo "Success: $diff_count files. Update $EXCLUDE_FILE"
+    else
+      echo "Success"
     echo "$ITEMS" > "$EXCLUDE_FILE" || error_exit "Failed to update Exclude_File"
 else
     error_exit "Rsync failed after $MAX_ATTEMPTS attempts."
