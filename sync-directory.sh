@@ -107,6 +107,7 @@ if [ $SUCCESS -eq 1 ]; then
       echo "Success: $diff_count files. Update $EXCLUDE_FILE"
     else
       echo "Success"
+    fi
     echo "$ITEMS" > "$EXCLUDE_FILE" || error_exit "Failed to update Exclude_File"
 else
     error_exit "Rsync failed after $MAX_ATTEMPTS attempts."
