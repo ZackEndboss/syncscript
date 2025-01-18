@@ -97,8 +97,14 @@ done
 
 # Check if rsync was successful for the final actions
 if [ $SUCCESS -eq 1 ]; then
+    # Vergleiche die Variable mit der Datei und finde neue Dateien
+    diff_files=$(diff --new-line-format='%L' --unchanged-line-format='' <(echo "$ITEMS") "$EXCLUDE_FILE")
+
+    # Zähle die neuen Dateien
+    diff_count=$(echo "$diff_files" | wc -l)
+
+    echo "Success: $diff_count files. Update $EXCLUDE_FILE"
     echo "$ITEMS" > "$EXCLUDE_FILE" || error_exit "Failed to update Exclude_File"
-    echo "Success. Updated directory listing saved to $EXCLUDE_FILE"
 else
     error_exit "Rsync failed after $MAX_ATTEMPTS attempts."
 fi
