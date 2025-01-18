@@ -99,7 +99,7 @@ done
 if [ $SUCCESS -eq 1 ]; then
     # Vergleiche die Variable mit der Datei und finde neue Dateien
     diff_files=$(diff --new-line-format='%L' --unchanged-line-format='' <(echo "$ITEMS") "$EXCLUDE_FILE")
-    echo "$diff_files"
+
     # Zähle die neuen Dateien
     diff_count=$(echo "$diff_files" | grep -v '^$' | wc -l)
 
