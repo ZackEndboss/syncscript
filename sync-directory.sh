@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # TEST:
 # cd path/to/script
@@ -27,13 +27,13 @@ SRC_PATH="$1"
 DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
-RSYNC_OPTS="-av --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2
+RSYNC_OPTS="-av --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q
 
 #echo "source:      $SRC_PATH"
 #echo "destination: $DEST_PATH"
 #echo "ssh-port:    $SSH_PORT"
 #echo "exclude-file: $EXCLUDE_FILE"
-echo "rsync: $SRC_PATH -> $DEST_PATH"
+echo "$SRC_PATH -> $DEST_PATH"
 
 # Verify local path exists and is writable
 if ! is_remote_path "$SRC_PATH"; then
@@ -88,13 +88,15 @@ do
 
     if [ $? -eq 0 ]; then
         SUCCESS=1
+#        echo "rsync done."
         break
     else
-        echo "Rsync failed, retrying in 2 minutes..."
+         echo "Rsync failed, retrying in 2 minutes..."
         sleep 120
     fi
 done
 
+#echo "check..."
 # Check if rsync was successful for the final actions
 if [ $SUCCESS -eq 1 ]; then
     diff_count=0
@@ -103,7 +105,7 @@ if [ $SUCCESS -eq 1 ]; then
       diff_files=$(diff --new-line-format='%L' --unchanged-line-format='' <(echo "$ITEMS") "$EXCLUDE_FILE") || :
 
       # Zähle die neuen Dateien
-      diff_count=$(echo "$diff_files" | grep -v '^$' | wc -l)|| echo "diff_count failed"
+      diff_count=$(echo "$diff_files" | grep -v '^$' | wc -l) || echo "diff_count failed"
     fi
 
     if [ "$diff_count" -gt 0 ]; then
@@ -115,3 +117,4 @@ if [ $SUCCESS -eq 1 ]; then
 else
     error_exit "Rsync failed after $MAX_ATTEMPTS attempts."
 fi
+#echo "return"
