@@ -97,14 +97,17 @@ done
 
 # Check if rsync was successful for the final actions
 if [ $SUCCESS -eq 1 ]; then
-    # Vergleiche die Variable mit der Datei und finde neue Dateien
-    diff_files=$(diff --new-line-format='%L' --unchanged-line-format='' <(echo "$ITEMS") "$EXCLUDE_FILE")
+    diff_count=0
+    if [ -f "$EXCLUDE_FILE" ]; then
+      # Vergleiche die Variable mit der Datei und finde neue Dateien
+      diff_files=$(diff --new-line-format='%L' --unchanged-line-format='' <(echo "$ITEMS") "$EXCLUDE_FILE") || :
 
-    # Zähle die neuen Dateien
-    diff_count=$(echo "$diff_files" | grep -v '^$' | wc -l)
+      # Zähle die neuen Dateien
+      diff_count=$(echo "$diff_files" | grep -v '^$' | wc -l)|| echo "diff_count failed"
+    fi
 
     if [ "$diff_count" -gt 0 ]; then
-      echo "Success: $diff_count files. Update $EXCLUDE_FILE"
+      echo "Success: $diff_count files. Update $EXCLUDE_FILE" || echo "Success"
     else
       echo "Success"
     fi
