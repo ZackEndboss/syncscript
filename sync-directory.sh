@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # TEST:
 # cd path/to/script
@@ -27,7 +27,7 @@ SRC_PATH="$1"
 DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
-RSYNC_OPTS="-av --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q
+RSYNC_OPTS="-av -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q
 
 #echo "source:      $SRC_PATH"
 #echo "destination: $DEST_PATH"
@@ -84,7 +84,7 @@ do
         --rsh="ssh -p $SSH_PORT" \
         --exclude-from="$EXCLUDE_FILE" \
         "$SRC_PATH/" \
-        "$DEST_PATH" 1>/dev/null 2>&1
+        "$DEST_PATH"
 
     if [ $? -eq 0 ]; then
         SUCCESS=1
