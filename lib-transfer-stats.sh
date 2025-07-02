@@ -225,5 +225,8 @@ test() {
 # aber NICHT, wenn es mit 'source' eingebunden wird.
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   # Führe den Befehl aus, der sich aus den Argumenten zusammensetzt
-  "$@"
+  if [[ -n "$1" ]]; then
+    # An argument was provided, so we call it as a function.
+    "$@"
+  fi
 fi
