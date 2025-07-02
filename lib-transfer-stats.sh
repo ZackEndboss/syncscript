@@ -155,64 +155,66 @@ stop_monitoring_multiple() {
 # ==============================================================================
 # ===== HAUPTPROGRAMM: Zeigt die neue Logik =====
 # ==============================================================================
-
-echo ">>> Multi-Ordner-Anwendung startet (finales Design) <<<"
-
-declare -a folder_list=("Serien" "Filme" "Musik/Alben")
-for folder in "${folder_list[@]}"; do mkdir -p "$folder"; done
-echo "Test-Ordner erstellt: ${folder_list[*]}"
-echo ""
-
-echo "Starte Überwachung für alle Ordner..."
-start_monitoring_multiple "${folder_list[@]}"
-echo "Überwachung für ${#folder_list[@]} Ordner gestartet."
-echo ""
-
-echo "Simuliere Arbeit..."
-fallocate -l 100M "Serien/s01e01.mkv"
-fallocate -l 250M "Filme/blockbuster.mp4"
-sleep 2
-fallocate -l 50M "Musik/Alben/album.flac"
-sleep 1
-echo ""
-
-# Zeige den Status für einen einzelnen Ordner an
-display_status "Filme"
-echo ""
-
-# Zeige die neue, aggregierte Zusammenfassung für ALLE Ordner an
-display_summary_status "${folder_list[@]}"
-echo ""
-
-# Aufräumen
-stop_monitoring_multiple "${folder_list[@]}"
-rm "Serien/s01e01.mkv" "Filme/blockbuster.mp4" "Musik/Alben/album.flac"
-rmdir "Serien" "Filme" "Musik/Alben"
-
-echo ">>> Multi-Ordner-Anwendung beendet <<<"
-
-
-
-echo ">>> Wieder-verwendung-test <<<"
-total_duration=0
-total_size=0
-for folder in "${folder_list[@]}"; do
-  mkdir "$folder"
-  fallocate -l 100M "$folder/s01e01.mkv"
-
-  start_monitoring "$folder"
-  fallocate -l 250M "$folder/blockbuster.mp4"
-
-#  sleep 2
-
-  status_data=$(get_status "$folder")
-  IFS=';' read -r local_duration local_size local_speed <<< "$status_data"
-
-  ((total_duration += $local_duration ))
-  ((total_size += $local_size ))
-  rm "$folder/s01e01.mkv"
-  rm "$folder/blockbuster.mp4"
-  rmdir "$folder"
-done
-
-_print_formatted_status "Total Stats" $total_duration $total_size
+# Test
+test() {
+  echo ">>> Multi-Ordner-Anwendung startet (finales Design) <<<"
+  
+  declare -a folder_list=("Serien" "Filme" "Musik/Alben")
+  for folder in "${folder_list[@]}"; do mkdir -p "$folder"; done
+  echo "Test-Ordner erstellt: ${folder_list[*]}"
+  echo ""
+  
+  echo "Starte Überwachung für alle Ordner..."
+  start_monitoring_multiple "${folder_list[@]}"
+  echo "Überwachung für ${#folder_list[@]} Ordner gestartet."
+  echo ""
+  
+  echo "Simuliere Arbeit..."
+  fallocate -l 100M "Serien/s01e01.mkv"
+  fallocate -l 250M "Filme/blockbuster.mp4"
+  sleep 2
+  fallocate -l 50M "Musik/Alben/album.flac"
+  sleep 1
+  echo ""
+  
+  # Zeige den Status für einen einzelnen Ordner an
+  display_status "Filme"
+  echo ""
+  
+  # Zeige die neue, aggregierte Zusammenfassung für ALLE Ordner an
+  display_summary_status "${folder_list[@]}"
+  echo ""
+  
+  # Aufräumen
+  stop_monitoring_multiple "${folder_list[@]}"
+  rm "Serien/s01e01.mkv" "Filme/blockbuster.mp4" "Musik/Alben/album.flac"
+  rmdir "Serien" "Filme" "Musik/Alben"
+  
+  echo ">>> Multi-Ordner-Anwendung beendet <<<"
+  
+  
+  
+  echo ">>> Wieder-verwendung-test <<<"
+  total_duration=0
+  total_size=0
+  for folder in "${folder_list[@]}"; do
+    mkdir "$folder"
+    fallocate -l 100M "$folder/s01e01.mkv"
+  
+    start_monitoring "$folder"
+    fallocate -l 250M "$folder/blockbuster.mp4"
+  
+  #  sleep 2
+  
+    status_data=$(get_status "$folder")
+    IFS=';' read -r local_duration local_size local_speed <<< "$status_data"
+  
+    ((total_duration += $local_duration ))
+    ((total_size += $local_size ))
+    rm "$folder/s01e01.mkv"
+    rm "$folder/blockbuster.mp4"
+    rmdir "$folder"
+  done
+  
+  _print_formatted_status "Total Stats" $total_duration $total_size
+}
