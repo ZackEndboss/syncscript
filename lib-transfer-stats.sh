@@ -218,3 +218,12 @@ test() {
   
   _print_formatted_status "Total Stats" $total_duration $total_size
 }
+
+# ==== Main Guard ====
+# Dieser Block wird NUR ausgeführt, wenn das Skript direkt
+# aufgerufen wird (z.B. ./script.sh oder bash script.sh),
+# aber NICHT, wenn es mit 'source' eingebunden wird.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  # Führe den Befehl aus, der sich aus den Argumenten zusammensetzt
+  "$@"
+fi
