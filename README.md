@@ -42,6 +42,9 @@ REMOTE_HOST=example.com
 # SSH-Port
 REMOTE_PORT=22
 
+# Max Speed in mb/s
+INTERNET_SPEED_MB_S=12
+
 # Ordner synchronisieren
 # Syntax: "Titel;Quelle;Ziel"
 SYNC_ENTRIES=(

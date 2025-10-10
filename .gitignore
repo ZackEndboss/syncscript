@@ -1,5 +1,6 @@
 # Ignoriere spezifische Config
 config.sh
+.env
 
 # Ignoriere user specific exclude files and lock files
 .exclude_*

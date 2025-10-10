@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source config.sh
+
 # TEST:
 # cd path/to/script
 # ./sync-directory.sh "/mnt/user/source_path/Filme" "user@host:/home/user/dest_path/Filme" "SSH_PORT" "local/path/to/EXCLUDE_FILE.txt"
@@ -28,12 +30,16 @@ DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
 RSYNC_OPTS="-av -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q
+SYNC_ENTRIES_MAX_LENGTH=$(get_sync_entries_max_length)
 
 #echo "source:      $SRC_PATH"
 #echo "destination: $DEST_PATH"
 #echo "ssh-port:    $SSH_PORT"
 #echo "exclude-file: $EXCLUDE_FILE"
-echo "$SRC_PATH -> $DEST_PATH"
+
+#echo "$SRC_PATH -> $DEST_PATH"
+printf "%-*s\n" "$SYNC_ENTRIES_MAX_LENGTH" "$SRC_PATH -> $DEST_PATH"
+
 
 # Verify local path exists and is writable
 if ! is_remote_path "$SRC_PATH"; then
@@ -77,8 +83,13 @@ MAX_ATTEMPTS=10
 
 for (( ATTEMPT=1; ATTEMPT<=MAX_ATTEMPTS; ATTEMPT++ ))
 do
-    if [ "$ATTEMPT" -gt 1 ]; then
-      echo "Attempt $ATTEMPT of $MAX_ATTEMPTS..."
+    if [ "$ATTEMPT" -eq 2 ]; then
+        echo -n "failed - try again.."
+    elif [ "$ATTEMPT" -gt 2 ]; then
+        echo -n "."
+    fi
+    if [ "$ATTEMPT" -eq 10 ]; then
+        echo -n " (Attempt $ATTEMPT of $MAX_ATTEMPTS)"
     fi
     rsync $RSYNC_OPTS \
         --rsh="ssh -p $SSH_PORT" \
@@ -111,7 +122,8 @@ if [ $SUCCESS -eq 1 ]; then
     if [ "$diff_count" -gt 0 ]; then
       echo "Success: $diff_count files. Update $EXCLUDE_FILE" || echo "Success"
     else
-      echo "Success"
+      #echo "Success"
+      true
     fi
     echo "$ITEMS" > "$EXCLUDE_FILE" || error_exit "Failed to update Exclude_File"
 else
