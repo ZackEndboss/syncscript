@@ -23,7 +23,7 @@
 # echo "$(print_result_human_readable $bytes_to_sync)"
 # echo "$rsync_output"
 
-source config.sh
+source config_lib.sh
 max_mb_s=${INTERNET_SPEED_MB_S:-12}
 #set -x
 # Führt den rsync-Vergleich im Trockenlauf-Modus aus.

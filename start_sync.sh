@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 chmod +x "$SCRIPT_DIR/sync-directory.sh"
 
 # Loading config
-source config.sh
+source config_lib.sh
 source diff.sh
 
 logger "Sync-Skript started: $(basename "$0")"

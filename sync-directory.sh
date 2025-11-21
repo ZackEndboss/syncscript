@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source config.sh
+source config_lib.sh
 
 # TEST:
 # cd path/to/script

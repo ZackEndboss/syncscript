@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source config.sh
+
 # Max length of longest Entrie
 get_sync_entries_max_length() {
     local max_len=0
