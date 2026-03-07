@@ -29,7 +29,7 @@ SRC_PATH="$1"
 DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
-RSYNC_OPTS="-av -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q
+RSYNC_OPTS="-av --no-o --no-g -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q
 SYNC_ENTRIES_MAX_LENGTH=$(get_sync_entries_max_length)
 
 #echo "source:      $SRC_PATH"
