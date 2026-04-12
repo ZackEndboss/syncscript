@@ -6,6 +6,9 @@ REMOTE_HOST=example.com
 # SSH-Port
 REMOTE_PORT=22
 
+# Max Speed in mb/s (128MB == 1000Mbit)
+INTERNET_SPEED_MB_S=128
+
 # Default UserID & GroupID of Files/Folder created by rsync
 UID=99
 GID=100
