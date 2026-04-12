@@ -2,11 +2,11 @@
 
 source config.sh
 
-[ -z "$UID" ] && echo "'UID' Variable ist leer oder nicht deklariert. SET UID=$(id -u)"
-UID="${UID:-$(id -u)}"
+[ -z "$USERID" ] && echo "'USERID' Variable ist leer oder nicht deklariert. SET USERID=$(id -u)"
+USERID="${USERID:-$(id -u)}"
 
-[ -z "$GID" ] && echo "'GID' Variable ist leer oder nicht deklariert. SET GID=$(id -g)"
-GID="${GID:-$(id -g)}"
+[ -z "$GROUPID" ] && echo "'GROUPID' Variable ist leer oder nicht deklariert. SET GROUPID=$(id -g)"
+GROUPID="${GROUPID:-$(id -g)}"
 
 # Max length of longest Entrie
 get_sync_entries_max_length() {
