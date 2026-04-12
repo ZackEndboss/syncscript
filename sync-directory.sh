@@ -29,6 +29,7 @@ SRC_PATH="$1"
 DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
+SSH_OPTS="$SSH_OPTS"
 RSYNC_OPTS="-av --chown=$UID:$GID -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q --no-o --no-g 
 SYNC_ENTRIES_MAX_LENGTH=$(get_sync_entries_max_length)
 
@@ -92,7 +93,7 @@ do
         echo -n " (Attempt $ATTEMPT of $MAX_ATTEMPTS)"
     fi
     rsync $RSYNC_OPTS \
-        --rsh="ssh -p $SSH_PORT" \
+        --rsh="ssh -p $SSH_PORT $SSH_OPTS" \
         --exclude-from="$EXCLUDE_FILE" \
         "$SRC_PATH/" \
         "$DEST_PATH"
