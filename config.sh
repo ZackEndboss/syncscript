@@ -10,6 +10,9 @@ REMOTE_PORT=22
 UID=99
 GID=100
 
+# Additional SSH Options for rsync. Like: -J user@my_ssh_jumpserver to use ssh-tunnel
+SSH_OPTS=""
+
 # Folder to Sync
 # Syntax: "title;source;destination"
 SYNC_ENTRIES=(
