@@ -2,6 +2,12 @@
 
 source config.sh
 
+[ -z "$UID" ] && echo "'UID' Variable ist leer oder nicht deklariert. SET UID=$(id -u)"
+UID="${UID:-$(id -u)}"
+
+[ -z "$GID" ] && echo "'GID' Variable ist leer oder nicht deklariert. SET GID=$(id -g)"
+GID="${GID:-$(id -g)}"
+
 # Max length of longest Entrie
 get_sync_entries_max_length() {
     local max_len=0
