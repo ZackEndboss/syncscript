@@ -30,7 +30,7 @@ DEST_PATH="$2"
 SSH_PORT="$3"
 EXCLUDE_FILE="$4"
 SSH_OPTS="$SSH_OPTS"
-RSYNC_OPTS="-av --chown=$UID:$GID -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q --no-o --no-g 
+RSYNC_OPTS="-av --chown=$USERID:$GROUPID -q --partial-dir=.rsync-partials --prune-empty-dirs" # -av -q --partial --info=progress2 -q --no-o --no-g 
 SYNC_ENTRIES_MAX_LENGTH=$(get_sync_entries_max_length)
 
 #echo "source:      $SRC_PATH"
