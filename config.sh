@@ -10,8 +10,8 @@ REMOTE_PORT=22
 INTERNET_SPEED_MB_S=128
 
 # Default UserID & GroupID of Files/Folder created by rsync
-UID=99
-GID=100
+USERID=99
+GROUPID=100
 
 # Additional SSH Options for rsync. Like: -J user@my_ssh_jumpserver to use ssh-tunnel
 SSH_OPTS=""
