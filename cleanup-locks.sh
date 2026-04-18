@@ -4,7 +4,7 @@ echo "$(date +%F) $0 started"
 for file in .*.lock; do
     # Prüfen, ob Dateien mit dem Muster existieren
     if [ ! -f "$file" ]; then
-        echo "Fehler: \"$file\" nicht gefunden."
+        echo "Keine treffer: \"$file\""
         continue
     fi
 
